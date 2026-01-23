@@ -1,9 +1,10 @@
 #include <stdio.h>  
 #include <stdlib.h>
 #include <math.h>
-#include "main.h"
-#include "func.c"
 
+#include "node.h"
+#include "djikstra.h"
+#include "stack.h"
 
 int main() {
 
@@ -11,7 +12,6 @@ int main() {
     int matrice_limit = matrice_size / sqrt(matrice_size);
 
     node_t *matrice_of_nodes[64]; //init the matrice 
-    vector_of_mov_t mov_vector; //init the enum to list all vector of movement
 
     //Init all nodes and add in the matrice
     node_creation_in_matrice(matrice_size,matrice_of_nodes);
