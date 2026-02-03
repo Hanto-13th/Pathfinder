@@ -1,6 +1,7 @@
 #include <stdio.h>  
 #include <stdlib.h>
 #include <stdbool.h>
+#include <math.h>
 
 #include "node.h"
 #include "stack.h"
@@ -34,12 +35,12 @@ int weight_between_two_nodes(node_t *node1, node_t *node2) {
 //we push him 
 void neighbors_node_computing_cost(node_t *actual_node,stack_t *non_tested_nodes) {
     size_t array_lght = sizeof(actual_node->next_nodes) / sizeof(actual_node->next_nodes[0]);
-    node_t *node_neighbor;
+    node_t *node_neighbor = NULL;
     int actual_node_value = actual_node->value;
     //for each neighbor, verify if the cost is less than actual and update 
     for(size_t i = 0; i < array_lght; i++) {
         node_neighbor = actual_node->next_nodes[i];
-        if(node_neighbor == NULL) {
+        if(node_neighbor == NULL || node_neighbor->locked) {
             continue;
         }
         int weight = weight_between_two_nodes(actual_node,node_neighbor);
@@ -55,6 +56,9 @@ void neighbors_node_computing_cost(node_t *actual_node,stack_t *non_tested_nodes
         if(node_neighbor->locked == false && node_neighbor->in_queue == false) {
             stack_push(non_tested_nodes,node_neighbor);
         }
+        else {
+            sorting_the_min_value(non_tested_nodes);
+        }
 
     }
 
@@ -66,7 +70,6 @@ void djikstra_algo(int matrice_size,node_t *initial_node,node_t *target_node) {
     //non tested nodes = node where his cost is not the optimal
     //when the optimal cost is finded, the node is locked
     stack_t *non_tested_nodes = stack_new(matrice_size);
-
     //set a ptr actual node to follow the algo progress
     node_t *actual_node;
 
@@ -86,7 +89,6 @@ void djikstra_algo(int matrice_size,node_t *initial_node,node_t *target_node) {
         node_with_min_value->locked = true;
         actual_node = node_with_min_value;
         neighbors_node_computing_cost(actual_node,non_tested_nodes);
-
 
     }
     stack_free(non_tested_nodes);

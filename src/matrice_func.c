@@ -28,18 +28,18 @@ void node_creation_in_matrice(int matrice_size,node_t *matrice_of_nodes[]) {
     }
 }
 
-//This function get all neighbor node for each node using vector
-
+//This function get all neighbor node for each node using vector adapted for matrice limit
 void neighbor_node_assignment(int matrice_size,int matrice_limit,node_t *matrice_of_nodes[]) {
+    int number_of_neighbor = 8;
     for(int i = 0;i<matrice_size;i++) {
         //the pointer recieve the adress of each nodes in the matrice
         node_t *ptr_node = matrice_of_nodes[i];
 
         //init the col and row variable to verify if the vector is in the limit of the matrice
-        int row = i / 8;
-        int col = i % 8;
+        int row = i / matrice_limit;
+        int col = i % matrice_limit;
 
-        for(int j = 0; j < matrice_limit; j++)
+        for(int j = 0; j < number_of_neighbor; j++)
         {
             vector_of_mov_t mov_vector = (vector_of_mov_t)j; //init the enum to list all vector of movement
 
@@ -55,38 +55,38 @@ void neighbor_node_assignment(int matrice_size,int matrice_limit,node_t *matrice
                 break;
             case UP:
                 if(row > 0) {
-                ptr_node->next_nodes[1] = matrice_of_nodes[i - 8];
+                ptr_node->next_nodes[1] = matrice_of_nodes[i - matrice_limit];
                 }
                 break;
             case DOWN:
-                if(row < 7) {
-                ptr_node->next_nodes[2] = matrice_of_nodes[i + 8];
+                if(row < matrice_limit - 1) {
+                ptr_node->next_nodes[2] = matrice_of_nodes[i + matrice_limit];
                 }
                 break;
             case RIGHT:
-                if(col < 7) {
+                if(col < matrice_limit - 1) {
                 ptr_node->next_nodes[3] = matrice_of_nodes[i + 1];
                 }
                 break;
             
             case DIAG_DOWN_LEFT:
-                if(row < 7 && col > 0) {
-                ptr_node->next_nodes[7] = matrice_of_nodes[i + 7];
+                if(row < matrice_limit - 1 && col > 0) {
+                ptr_node->next_nodes[7] = matrice_of_nodes[i + matrice_limit - 1];
                 }
                 break;
             case DIAG_UP_LEFT:
                 if(row > 0 && col > 0) {
-                ptr_node->next_nodes[4] = matrice_of_nodes[i - 9];
+                ptr_node->next_nodes[4] = matrice_of_nodes[i - matrice_limit - 1];
                 }
                 break;
             case DIAG_UP_RIGHT:
-                if(row > 0 && col < 7) {
-                ptr_node->next_nodes[5] = matrice_of_nodes[i - 7];
+                if(row > 0 && col < matrice_limit - 1) {
+                ptr_node->next_nodes[5] = matrice_of_nodes[i - matrice_limit + 1];
                 }
                 break;
             case DIAG_DOWN_RIGHT:
-                if(row < 7 && col < 7) {
-                ptr_node->next_nodes[6] = matrice_of_nodes[i + 9];
+                if(row < matrice_limit - 1 && col < matrice_limit - 1) {
+                ptr_node->next_nodes[6] = matrice_of_nodes[i + matrice_limit + 1];
                 }
                 break;
             default:
@@ -98,5 +98,21 @@ void neighbor_node_assignment(int matrice_size,int matrice_limit,node_t *matrice
     }
 
 
+}
+
+node_t *user_choose_start_node(node_t *matrice_of_nodes[]) {
+    //Get the start node choose by user
+    int id;
+    printf("Enter the ID for the start: ");
+    scanf("%d", &id);
+    return matrice_of_nodes[id];
+}
+
+node_t *user_choose_end_node(node_t *matrice_of_nodes[]) {
+    //Get the end node choose by user
+    int id;
+    printf("Enter the ID for the end: ");
+    scanf("%d", &id);
+    return matrice_of_nodes[id];
 }
 

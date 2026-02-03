@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stdbool.h>
+
 typedef struct Node node_t;
 typedef enum Vector_of_movements vector_of_mov_t;
 
@@ -24,6 +26,8 @@ enum Vector_of_movements {
     DIAG_DOWN_LEFT = 7
 };
 
-//functions prototype for node creation
+//functions prototype for node creation and neighbor assignment for each nodes
 void node_creation_in_matrice(int matrice_size,node_t *matrice_of_nodes[]);
 void neighbor_node_assignment(int matrice_size,int matrice_limit,node_t *matrice_of_nodes[]);
+node_t *user_choose_start_node(node_t *matrice_of_nodes[]);
+node_t *user_choose_end_node(node_t *matrice_of_nodes[]);
